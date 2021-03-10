@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const User = require('./user');
+const Location = require('./location');
 
 const connectDb = () => {
   mongoose.set('debug', true);
@@ -6,5 +8,5 @@ const connectDb = () => {
 }
 
 module.exports = {
-  connectDb
-}
+  connectDb, User, Location
+};

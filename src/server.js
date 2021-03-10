@@ -17,12 +17,8 @@ app.use(checkAuth);
 app.use('/', home);
 app.use('/', auth);
 
-connectDb().then(() => {
-  app.listen(process.env.PORT, () => {
-    console.log(`Listening on port ${process.env.PORT}!`);
-  })
-}).catch(err => {
-  console.log(err);
-});
+connectDb()
+  .then(app.listen(process.env.PORT))
+  .catch(err => { throw err });
 
 module.exports = app;

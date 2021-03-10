@@ -1,6 +1,6 @@
-const home = require('./home');
+const user = require('./user');
 const auth = require('./auth');
 
 module.exports = {
-  home, auth
+  user, auth
 }

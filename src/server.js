@@ -4,7 +4,7 @@ const expressValidator = require('express-validator');
 const cookieParser = require('cookie-parser');
 const { connectDb } = require('./models');
 const { checkAuth, requireAuth } = require('./middleware');
-const { home, auth } = require('./controllers');
+const { auth, user } = require('./controllers');
 
 const app = express();
 
@@ -14,8 +14,8 @@ app.use(expressValidator());
 app.use(cookieParser());
 app.use(checkAuth);
 
-app.use('/', home);
 app.use('/', auth);
+app.use('/user', user);
 
 connectDb()
   .then(app.listen(process.env.PORT))
@@ -23,7 +23,7 @@ connectDb()
 
 module.exports = app;
 
-// Stretch challenges: how to deploy over https?
+// Stretch challenge: how to deploy over https?
 
 // const https = require('https');
 // const { readFileSync } = require('fs');

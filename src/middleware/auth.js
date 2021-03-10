@@ -3,26 +3,27 @@ const jwt = require('jsonwebtoken');
 const checkAuth = (req, res, next) => {
   const token = req.cookies.nToken;
   if (typeof token === 'undefined' || token === null) {
-    res.locals.currentUser = null;
+    req.user = null;
     return next();
   }
   jwt.verify(token, process.env.SECRET, (err, decodedToken) => {
     if (err) {
-      res.locals.currentUser = null
+      req.user = null;
       return next();
     }
-    res.locals.currentUser = decodedToken;
+    req.user = decodedToken;
+    return next();
   });
-  next();
+  return next();
 };
 
 const requireAuth = (req, res, next) => {
-  if (!res.locals.currentUser) {
+  if (!req.user) {
     return res.status(401).send({ message: 'Unauthorized' });
   }
-  next();
+  return next();
 };
 
 module.exports = {
   checkAuth, requireAuth
-}
+};

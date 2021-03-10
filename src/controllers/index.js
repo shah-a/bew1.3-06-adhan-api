@@ -3,4 +3,4 @@ const auth = require('./auth');
 
 module.exports = {
   user, auth
-}
+};

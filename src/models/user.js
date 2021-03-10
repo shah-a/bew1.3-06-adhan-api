@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 const UserSchema = new Schema({
   username: { type: String, required: true },
@@ -8,30 +9,28 @@ const UserSchema = new Schema({
   locations: [{ type: Schema.Types.ObjectId, ref: 'Location' }]
 }, { timestamps: true });
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function generate(next) {
   if (!this.isModified('password')) return next();
   bcrypt.genSalt(10)
-    .then(salt => {
-      return bcrypt.hash(this.password, salt);
-    })
-    .then(hash => {
+    .then((salt) => bcrypt.hash(this.password, salt))
+    .then((hash) => {
       this.password = hash;
-      next();
     })
-    .catch(err => {
-      console.log(err)
+    .catch((err) => {
+      throw err;
     });
+  return next();
 });
 
-UserSchema.methods.comparePassword = function (password, done) {
+UserSchema.methods.comparePassword = function compare(password, done) {
   bcrypt.compare(password, this.password)
-    .then(result => {
+    .then((result) => {
       done(result);
     })
-    .catch(err => {
-      console.log(err);
+    .catch((err) => {
+      throw err;
     });
-}
+};
 
 const model = mongoose.model('User', UserSchema);
 

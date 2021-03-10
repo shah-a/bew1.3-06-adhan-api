@@ -3,7 +3,7 @@ const express = require('express');
 const expressValidator = require('express-validator');
 const cookieParser = require('cookie-parser');
 const { connectDb } = require('./models');
-const { checkAuth, requireAuth } = require('./middleware');
+const { checkAuth } = require('./middleware');
 const { auth, user } = require('./controllers');
 
 const app = express();
@@ -19,7 +19,7 @@ app.use('/user', user);
 
 connectDb()
   .then(app.listen(process.env.PORT))
-  .catch(err => { throw err });
+  .catch((err) => { throw err; });
 
 module.exports = app;
 
@@ -34,4 +34,4 @@ module.exports = app;
 
 // const server = https.createServer(credentials, app);
 
-// server.listen(process.env.PORT, () => console.log("listening"));
+// server.listen(process.env.PORT);

@@ -10,7 +10,7 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 const testAccount = {
-  username: 'username',
+  username: 'aaaaaaaaaaaa',
   password: 'password',
   _id: 'aaaaaaaaaaaa'
 };
@@ -21,7 +21,7 @@ const usernameDNE = {
 };
 
 const passwordDNE = {
-  username: 'username',
+  username: 'aaaaaaaaaaaa',
   password: 'nope'
 };
 
@@ -43,6 +43,15 @@ describe('Auth Tests', function () {
     User.deleteOne({ _id: 'aaaaaaaaaaaa' }, (err) => {
       if (err) { done(err); } else { done(); }
     });
+  });
+
+  it('Should have a homepage', (done) => {
+    agent.get('/')
+      .end((err, res) => {
+        if (err) return done(err);
+        res.should.have.status(200);
+        return done();
+      });
   });
 
   it('Should log in with valid account', function (done) {

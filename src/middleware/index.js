@@ -1,5 +1,5 @@
-const { checkAuth, requireAuth } = require('./auth');
+const { checkAuth, requireAuth, requireUnauth } = require('./auth');
 
 module.exports = {
-  checkAuth, requireAuth
+  checkAuth, requireAuth, requireUnauth
 };

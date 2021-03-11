@@ -19,10 +19,12 @@ UserSchema.pre('save', function (next) {
   } else {
     bcrypt.genSalt(10)
       .then((salt) => bcrypt.hash(this.password, salt))
-      .then((hash) => { this.password = hash; })
+      .then((hash) => {
+        this.password = hash;
+        next();
+      })
       .catch((err) => { throw err; });
   }
-  next();
 });
 
 const model = mongoose.model('User', UserSchema);

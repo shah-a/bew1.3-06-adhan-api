@@ -4,7 +4,7 @@ const expressValidator = require('express-validator');
 const cookieParser = require('cookie-parser');
 const { connectDb } = require('./models');
 const { checkAuth } = require('./middleware');
-const { auth, user } = require('./controllers');
+const { auth, users } = require('./controllers');
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use(checkAuth);
 
 app.use('/', auth);
-app.use('/user', user);
+app.use('/users', users);
 
 connectDb()
   .then(app.listen(process.env.PORT))

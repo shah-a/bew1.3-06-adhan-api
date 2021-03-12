@@ -2,10 +2,6 @@ const jwt = require('jsonwebtoken');
 
 const checkAuth = (req, res, next) => {
   const token = req.cookies.nToken;
-  if (typeof token === 'undefined' || token === null) {
-    req.user = null;
-    return next();
-  }
   jwt.verify(token, process.env.SECRET, (err, decodedToken) => {
     if (err) {
       req.user = null;
@@ -14,7 +10,6 @@ const checkAuth = (req, res, next) => {
     req.user = decodedToken;
     return next();
   });
-  return next();
 };
 
 const requireAuth = (req, res, next) => {

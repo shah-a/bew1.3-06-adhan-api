@@ -1,21 +1,21 @@
 const jwt = require('jsonwebtoken');
 
-/*
- * Note to self:
- * Need to fix lack of req.user being check, since checkAuth
- * was merged into requireAuth. And requireAuth is not being
- * used as a global piece of middleware at the moment.
- */
-
-const requireAuth = (req, res, next) => {
+const checkAuth = (req, res, next) => {
   const token = req.cookies.nToken;
   jwt.verify(token, process.env.SECRET, (err, decodedToken) => {
     if (err) {
-      return res.status(401).send({ message: 'Unauthorized.' });
+      return next(); // This block leaves req.user === undefined on all routes
     }
     req.user = decodedToken;
     return next();
   });
+};
+
+const requireAuth = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).send({ message: 'Unauthorized.' });
+  }
+  return next();
 };
 
 const requireUnauth = (req, res, next) => {
@@ -28,5 +28,5 @@ const requireUnauth = (req, res, next) => {
 };
 
 module.exports = {
-  requireAuth, requireUnauth
+  checkAuth, requireAuth, requireUnauth
 };

@@ -21,7 +21,9 @@ app.all('/*', (req, res) => {
 
 connectDb()
   .then(app.listen(process.env.PORT))
-  .catch((err) => { throw err; });
+  .catch((err) => {
+    throw err;
+  });
 
 module.exports = app;
 

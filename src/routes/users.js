@@ -1,16 +1,24 @@
 const router = require('express').Router();
 const { users } = require('../controllers');
+const { requireAuth } = require('../middleware');
 
-router.get('/', users.getAll);
-// router.get('/:id', users.getOne);
-router.get('/:username', users.getOne);
+/*
+ * NOTE:
+ * The requireAuth middleware needs to be invoked below the
+ * postOne controller's route. Otherwise, the user will require
+ * authentication before making an account. Do you see how that
+ * might be a bit problematic? 😆
+ */
 
 router.post('/', users.postOne);
 
-// router.put('/:id', users.putOne);
+router.use('/', requireAuth);
+
+router.get('/', users.getAll);
+router.get('/:username', users.getOne);
+
 router.put('/:username', users.putOne);
 
-// router.delete('/:id', users.deleteOne);
 router.delete('/:username', users.deleteOne);
 
 module.exports = router;

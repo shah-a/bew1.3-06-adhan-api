@@ -1,5 +1,12 @@
 const jwt = require('jsonwebtoken');
 
+/*
+ * Note to self:
+ * Need to fix lack of req.user being check, since checkAuth
+ * was merged into requireAuth. And requireAuth is not being
+ * used as a global piece of middleware at the moment.
+ */
+
 const requireAuth = (req, res, next) => {
   const token = req.cookies.nToken;
   jwt.verify(token, process.env.SECRET, (err, decodedToken) => {

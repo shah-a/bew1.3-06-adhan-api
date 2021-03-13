@@ -21,7 +21,11 @@ const postLogin = (req, res) => {
     })
     .then((match) => {
       if (match) {
-        const token = jwt.sign({ _id: user._id, username: user.username }, process.env.SECRET, { expiresIn: '60 days' });
+        const token = jwt.sign(
+          { _id: user._id, username: user.username },
+          process.env.SECRET,
+          { expiresIn: '60 days' }
+        );
         return res
           .cookie('nToken', token, { maxAge: 900000, httpOnly: true })
           .json({ message: `Successfully authenticated. As-Salaamu 'Alaykum, '${username}' :)` });
@@ -30,7 +34,9 @@ const postLogin = (req, res) => {
     })
     .catch((err) => {
       if (err.message === 'User is not signed up.') {
-        return res.status(404).json({ message: `User '${username}' is not signed up.` });
+        return res
+          .status(404)
+          .json({ message: `User '${username}' is not signed up.` });
       }
       return res.json({ error: err.message });
     });

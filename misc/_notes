@@ -1,0 +1,23 @@
+TODO:
+- Refactor DB queries to use lean()
+  - Also think about requiring specific auth for /users/:(id/username)
+
+Stretch:
+- Figure out how to use express validator properly
+  - Verify valid user inputs
+
+-------------------------
+That Allah has blessed me with the ability to make
+an app that I'm THIS satisfied with is a ni'mah I
+can never be sufficiently grateful for.
+
+Writing this app has begun my journey with REST APIs.
+
+It's not that the app is particular complex by nature
+or anything. Rather, it's the organization of the
+file structure that I'm most pleased with.
+
+That, and of course the noble subject matter of the
+app's theme :)
+
+-------------------------

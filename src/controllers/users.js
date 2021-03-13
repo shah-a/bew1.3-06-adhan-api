@@ -55,19 +55,20 @@ const putOne = (req, res) => {
 };
 
 const deleteOne = (req, res) => {
-  User.findOneAndDelete({ username: req.params.username })
-    .then((user) => {
-      res.json({
-        message: 'Successfully deleted account.',
-        user: {
-          _id: user._id,
-          username: user.username
-        }
-      });
-    })
-    .catch((err) => {
-      res.json({ error: err.message });
-    });
+  // User.findOneAndDelete({ username: req.params.username })
+  //   .then((user) => {
+  //     res.json({
+  //       message: 'Successfully deleted account.',
+  //       user: {
+  //         _id: user._id,
+  //         username: user.username
+  //       }
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     res.json({ error: err.message });
+  //   });
+  res.json({ message: 'Not implemented yet' });
 };
 
 module.exports = {

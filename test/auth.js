@@ -2,7 +2,7 @@
 /* eslint-disable prefer-arrow-callback */
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const app = require('../src/server');
+const app = require('../src/app');
 const { User } = require('../src/models');
 
 // eslint-disable-next-line no-unused-vars

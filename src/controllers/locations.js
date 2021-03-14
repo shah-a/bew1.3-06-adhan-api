@@ -56,7 +56,7 @@ const putOne = (req, res) => {
         location.name = newName;
         location.lat = newLat;
         location.long = newLong;
-        location.updatedAt = new Date(); // please see <commit>'s commit message
+        location.updatedAt = new Date(); // please see bae53f7's commit message (2021/03/14)
         return location.save();
       }
       throw new Error('Unauthorized');

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const ms = require('ms');
 const { User } = require('../models');
 
 const getLogout = (req, res) => {
@@ -24,10 +25,10 @@ const postLogin = (req, res) => {
         const token = jwt.sign(
           { _id: user._id, username: user.username },
           process.env.SECRET,
-          { expiresIn: '60 days' }
+          { expiresIn: '1 hour' }
         );
         return res
-          .cookie('nToken', token, { maxAge: 900000, httpOnly: true })
+          .cookie('nToken', token, { maxAge: ms('1 hour'), httpOnly: true })
           .json({ message: `Successfully authenticated. As-Salaamu 'Alaykum, '${username}' :)` });
       }
       return res.status(401).json({ message: 'Incorrect password.' });

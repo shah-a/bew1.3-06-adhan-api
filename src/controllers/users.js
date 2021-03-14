@@ -47,7 +47,7 @@ const putOne = (req, res) => {
       user = query;
       user.username = newUsername;
       user.password = newPassword;
-      user.updatedAt = new Date(); // please see <commit>'s commit message
+      user.updatedAt = new Date(); // please see bae53f7's commit message (2021/03/14)
       return user.save();
     })
     .then((newUser) => {

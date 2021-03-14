@@ -1,7 +1,7 @@
 const { User } = require('../models');
 
 const getAll = (req, res) => {
-  User.find().select('username')
+  User.find().select('username').lean()
     .then((users) => {
       res.json({ users });
     })
@@ -11,7 +11,7 @@ const getAll = (req, res) => {
 };
 
 const getOne = (req, res) => {
-  User.find({ username: req.params.username })
+  User.find({ username: req.params.username }).lean()
     .then((user) => {
       res.json({ user });
     })
@@ -21,12 +21,11 @@ const getOne = (req, res) => {
 };
 
 const postOne = (req, res) => {
-  const newUser = new User(req.body);
-  newUser.save()
+  new User(req.body).save()
     .then((user) => {
       res.json({
         message: 'Successfully added account.',
-        user: {
+        new_user: {
           _id: user._id,
           username: user.username
         }
@@ -38,37 +37,46 @@ const postOne = (req, res) => {
 };
 
 const putOne = (req, res) => {
-  // const user = await User.findById(req.params.userId);
-  // user.username = req.body.username;
-  // user.password = req.body.password;
-  // user.save()
-  //   .then((result) => {
-  //     res.json({
-  //       message: 'Successfully updated account.',
-  //       user_id: result._id
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     res.json({ error: error.message });
-  //   });
-  res.json({ message: 'Not implemented yet' });
+  const newUsername = req.body.username;
+  const newPassword = req.body.password;
+
+  let user;
+
+  User.findOne({ username: req.params.username }).select(['username', 'password'])
+    .then((query) => {
+      user = query;
+      user.username = newUsername;
+      user.password = newPassword;
+      return user.save();
+    })
+    .then((newUser) => {
+      res.clearCookie('nToken').json({
+        message: 'Successfully updated account. Please log in again.',
+        updated_user: {
+          _id: newUser._id,
+          username: newUser.username
+        }
+      });
+    })
+    .catch((err) => {
+      res.json({ error: err.message });
+    });
 };
 
 const deleteOne = (req, res) => {
-  // User.findOneAndDelete({ username: req.params.username })
-  //   .then((user) => {
-  //     res.json({
-  //       message: 'Successfully deleted account.',
-  //       user: {
-  //         _id: user._id,
-  //         username: user.username
-  //       }
-  //     });
-  //   })
-  //   .catch((err) => {
-  //     res.json({ error: err.message });
-  //   });
-  res.json({ message: 'Not implemented yet' });
+  User.findOneAndDelete({ username: req.params.username }).lean()
+    .then((user) => {
+      res.clearCookie('nToken').json({
+        message: 'Successfully deleted account. You have been logged out.',
+        deleted_user: {
+          _id: user._id,
+          username: user.username
+        }
+      });
+    })
+    .catch((err) => {
+      res.json({ error: err.message });
+    });
 };
 
 module.exports = {

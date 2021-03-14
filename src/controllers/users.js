@@ -51,7 +51,7 @@ const putOne = (req, res) => {
     })
     .then((newUser) => {
       res.clearCookie('nToken').json({
-        message: 'Successfully updated account. Please log in again.',
+        message: `Successfully updated '${req.params.username}'. Please log in again.`,
         updated_user: {
           _id: newUser._id,
           username: newUser.username
@@ -67,7 +67,7 @@ const deleteOne = (req, res) => {
   User.findOneAndDelete({ username: req.params.username }).lean()
     .then((user) => {
       res.clearCookie('nToken').json({
-        message: 'Successfully deleted account. You have been logged out.',
+        message: `Successfully deleted '${req.params.username}'. You have been logged out.`,
         deleted_user: {
           _id: user._id,
           username: user.username

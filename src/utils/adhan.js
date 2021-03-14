@@ -19,3 +19,11 @@ console.log({
   date: `${date.toLocaleDateString()}`,
   prayerTimes
 });
+
+// Location.find({ name: blah }).lean()
+//   .then((loc) => {
+//     new Coordinates(loc.lat, loc.long)
+//   })
+//   .catch((err) => {
+//     res.json({ error: err.message });
+//   });

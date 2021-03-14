@@ -4,7 +4,7 @@ const expressValidator = require('express-validator');
 const cookieParser = require('cookie-parser');
 const { checkAuth } = require('./middleware');
 const { connectDb } = require('./models');
-const { home, auth, users } = require('./routes');
+const routes = require('./routes');
 
 const app = express();
 
@@ -13,9 +13,10 @@ app.use(expressValidator());
 app.use(cookieParser());
 app.use(checkAuth);
 
-app.use('/', home);
-app.use('/', auth);
-app.use('/users', users);
+app.use('/', routes.home);
+app.use('/', routes.auth);
+app.use('/users', routes.users);
+app.use('/locations', routes.locations);
 
 app.all('/*', (req, res) => {
   res.status(404).json({ error: 'Route not found.' });

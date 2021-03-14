@@ -3,10 +3,9 @@ const User = require('./user');
 const Location = require('./location');
 
 // eslint-disable-next-line arrow-body-style
-const connectDb = () => {
+const connectDb = (URI) => {
   // mongoose.set('debug', true);
-  return mongoose.connect(process.env.MONGO_URI,
-    { useNewUrlParser: true, useUnifiedTopology: true });
+  return mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true });
 };
 
 module.exports = {

@@ -21,7 +21,7 @@ app.all('/*', (req, res) => {
   res.status(404).json({ error: 'Route not found.' });
 });
 
-connectDb()
+connectDb(process.env.MONGO_URI)
   .then(app.listen(process.env.PORT))
   .catch((err) => {
     throw err;

@@ -6,7 +6,7 @@ const LocationSchema = new Schema({
   name: { type: String, required: true },
   lat: { type: Number, required: true },
   long: { type: Number, required: true },
-  user: { type: Schema.Types.ObjectId, ref: 'User' }
+  user: { type: Schema.Types.ObjectId, ref: 'User', select: false }
 }, { timestamps: true });
 
 const model = mongoose.model('Location', LocationSchema);

@@ -1,7 +1,8 @@
-const { Location } = require('../models');
+const { Location, User } = require('../models');
 
 const getAll = (req, res) => {
   Location.find({ user: req.user._id }).lean()
+    .select(['name', 'lat', 'long'])
     .then((locations) => {
       res.json({ locations });
     })
@@ -23,11 +24,17 @@ const getOne = (req, res) => {
 const postOne = (req, res) => {
   const newLocation = new Location(req.body);
   newLocation.user = req.user._id;
+
   newLocation.save()
-    .then((location) => {
+    .then(() => User.findById(req.user._id))
+    .then((user) => {
+      user.locations.push(newLocation);
+      return user.save();
+    })
+    .then(() => {
       res.json({
-        message: 'Successfully added location.',
-        new_location: location
+        message: `Successfully added '${newLocation.name}'.`,
+        new_location: newLocation
       });
     })
     .catch((err) => {

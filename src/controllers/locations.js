@@ -51,11 +51,15 @@ const putOne = (req, res) => {
 
   Location.findOne({ _id: req.params.locationId, user: req.user._id })
     .then((query) => {
-      location = query;
-      location.name = newName;
-      location.lat = newLat;
-      location.long = newLong;
-      return location.save();
+      if (query) {
+        location = query;
+        location.name = newName;
+        location.lat = newLat;
+        location.long = newLong;
+        location.updatedAt = new Date(); // please see <commit>'s commit message
+        return location.save();
+      }
+      throw new Error('Unauthorized');
     })
     .then((newLocation) => {
       res.json({
@@ -64,7 +68,10 @@ const putOne = (req, res) => {
       });
     })
     .catch((err) => {
-      res.json({ error: err.message });
+      if (err.message === 'Unauthorized') {
+        return res.status(401).send({ message: 'Unauthorized.' });
+      }
+      return res.json({ error: err.message });
     });
 };
 
@@ -72,10 +79,13 @@ const deleteOne = (req, res) => {
   Location
     .findOneAndDelete({ _id: req.params.locationId, user: req.user._id }).lean()
     .then((location) => {
-      res.json({
-        message: `Successfully deleted '${location.name}'.`,
-        deleted_location: location
-      });
+      if (location) {
+        return res.json({
+          message: `Successfully deleted '${location.name}'.`,
+          deleted_location: location
+        });
+      }
+      return res.status(401).send({ message: 'Unauthorized.' });
     })
     .catch((err) => {
       res.json({ error: err.message });

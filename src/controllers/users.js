@@ -24,10 +24,9 @@ const getOne = (req, res) => {
 const postOne = (req, res) => {
   new User(req.body).save()
     .then((user) => {
-      res.json({
-        message: 'Successfully added account.',
+      res.clearCookie('nToken').json({
+        message: `Successfully added '${req.body.username}'. Please log in.`,
         new_user: {
-          _id: user._id,
           username: user.username
         }
       });
@@ -43,18 +42,18 @@ const putOne = (req, res) => {
 
   let user;
 
-  User.findOne({ username: req.params.username }).select(['username', 'password'])
+  User.findOne({ username: req.params.username })
     .then((query) => {
       user = query;
       user.username = newUsername;
       user.password = newPassword;
+      user.updatedAt = new Date(); // please see <commit>'s commit message
       return user.save();
     })
     .then((newUser) => {
       res.clearCookie('nToken').json({
         message: `Successfully updated '${req.params.username}'. Please log in again.`,
         updated_user: {
-          _id: newUser._id,
           username: newUser.username
         }
       });
@@ -70,7 +69,6 @@ const deleteOne = (req, res) => {
       res.clearCookie('nToken').json({
         message: `Successfully deleted '${req.params.username}'. You have been logged out.`,
         deleted_user: {
-          _id: user._id,
           username: user.username
         }
       });

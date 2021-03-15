@@ -11,7 +11,7 @@ const getAll = (req, res) => {
 };
 
 const getOne = (req, res) => {
-  User.find({ username: req.params.username }).lean()
+  User.findOne({ username: req.params.username }).lean()
     .populate('locations', ['name', 'lat', 'long'])
     .then((user) => {
       res.json({ user });

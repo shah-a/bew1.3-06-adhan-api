@@ -23,10 +23,10 @@ const checkAuth = (req, res, next) => {
 
 const requireAuth = (req, res, next) => {
   if (!req.user) {
-    return res.status(401).send({ message: 'Unauthorized.' });
+    return res.status(401).send({ message: 'Unauthenticated.' });
   }
   if (req.params.username && req.params.username !== req.user.username) {
-    return res.status(401).send({ message: 'Unauthorized.' });
+    return res.status(403).send({ message: 'Unauthorized.' });
   }
   return next();
 };
@@ -34,7 +34,7 @@ const requireAuth = (req, res, next) => {
 const requireUnauth = (req, res, next) => {
   if (req.user) {
     return res
-      .status(401)
+      .status(403)
       .send({ message: `Already logged in as '${req.user.username}'.` });
   }
   return next();

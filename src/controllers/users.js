@@ -64,7 +64,8 @@ const putOne = (req, res) => {
 };
 
 const deleteOne = (req, res) => {
-  User.findOneAndDelete({ username: req.params.username }).lean()
+  // Using `lean()` here would break UserSchema's `post` hook
+  User.findOneAndDelete({ username: req.params.username })
     .then((user) => {
       res.clearCookie('nToken').json({
         message: `Successfully deleted '${req.params.username}'. You have been logged out.`,

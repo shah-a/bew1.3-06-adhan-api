@@ -11,8 +11,12 @@ const UserSchema = new Schema({
 }, { timestamps: true });
 
 UserSchema.plugin(uniqueValidator);
-UserSchema.pre('save', pwHash);
 UserSchema.methods.pwCheck = pwCheck;
+UserSchema.pre('save', pwHash);
+// eslint-disable-next-line func-names, prefer-arrow-callback
+UserSchema.post('findOneAndDelete', function (user, next) {
+  user.model('Location').deleteMany({ user: user._id }, next);
+});
 
 const model = mongoose.model('User', UserSchema);
 

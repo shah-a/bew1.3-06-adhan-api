@@ -67,8 +67,9 @@ const putOne = (req, res) => {
 };
 
 const deleteOne = (req, res) => {
+  // Using `lean()` here would break LocationSchema's `post` hook
   Location
-    .findOneAndDelete({ _id: req.params.locationId, user: req.user._id }).lean()
+    .findOneAndDelete({ _id: req.params.locationId, user: req.user._id })
     .populate('user', ['username'])
     .then((location) => {
       if (location) {

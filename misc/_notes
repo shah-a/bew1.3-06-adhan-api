@@ -1,10 +1,21 @@
-TODO:
-- Refactor DB queries to use lean()
-  - Also think about requiring specific auth for /users/:(id/username)
+--------------------
+Next steps:
 
+GET
+/adhan             <-- today, all five, all locations
+/adhan/:locationId <-- today, all five, :location
+/adhan/fajr        <-- today, fajr, all locations
+/adhan/dhuhr       <-- today, dhuhr, all locations
+/adhan/asr         <-- today, asr, all locations
+/adhan/maghrib     <-- today, maghrib, all locations
+/adhan/isha        <-- today, isha, all locations
+
+--------------------
 Stretch:
 - Figure out how to use express validator properly
-  - Verify valid user inputs
+  - Verify valid user inputs. Right now, the entire
+    program assumes/relies on the user feeding valid
+    JSON inputs to req.body
 
 -------------------------
 That Allah has blessed me with the ability to make
@@ -13,9 +24,10 @@ can never be sufficiently grateful for.
 
 Writing this app has begun my journey with REST APIs.
 
-It's not that the app is particular complex by nature
-or anything. Rather, it's the organization of the
-file structure that I'm most pleased with.
+It's not that the app is particularly complex/advance.
+But it's the overall structure of the project that I'm
+pleased with; I tried my best to organize the code and
+the files in a clean, logical fashion.
 
 That, and of course the noble subject matter of the
 app's theme :)

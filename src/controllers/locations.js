@@ -12,9 +12,13 @@ const getAll = (req, res) => {
 };
 
 const getOne = (req, res) => {
-  Location.find({ _id: req.params.locationId, user: req.user._id }).lean()
+  Location.findOne({ _id: req.params.locationId, user: req.user._id }).lean()
+    .populate('user', ['username'])
     .then((location) => {
-      res.json({ location });
+      if (location) {
+        return res.json({ location });
+      }
+      return res.status(404).json({ message: 'No location found.' });
     })
     .catch((err) => {
       res.json({ error: err.message });
@@ -43,41 +47,29 @@ const postOne = (req, res) => {
 };
 
 const putOne = (req, res) => {
-  const newName = req.body.name;
-  const newLat = req.body.lat;
-  const newLong = req.body.long;
+  const filter = { _id: req.params.locationId, user: req.user._id };
+  const update = { name: req.body.name, lat: req.body.lat, long: req.body.long };
 
-  let location;
-
-  Location.findOne({ _id: req.params.locationId, user: req.user._id })
-    .then((query) => {
-      if (query) {
-        location = query;
-        location.name = newName;
-        location.lat = newLat;
-        location.long = newLong;
-        location.updatedAt = new Date(); // please see bae53f7's commit message (2021/03/14)
-        return location.save();
+  Location.findOneAndUpdate(filter, update).populate('user', ['username'])
+    .setOptions({ runValidators: true, new: true })
+    .then((location) => {
+      if (location) {
+        return res.json({
+          message: `Successfully updated '${location.name}'.`,
+          updated_location: location
+        });
       }
-      throw new Error('Unauthorized');
-    })
-    .then((newLocation) => {
-      res.json({
-        message: `Successfully updated '${location.name}'.`,
-        updated_location: newLocation
-      });
+      return res.status(404).json({ message: 'No location found.' });
     })
     .catch((err) => {
-      if (err.message === 'Unauthorized') {
-        return res.status(401).send({ message: 'Unauthorized.' });
-      }
-      return res.json({ error: err.message });
+      res.json({ error: err.message });
     });
 };
 
 const deleteOne = (req, res) => {
   Location
     .findOneAndDelete({ _id: req.params.locationId, user: req.user._id }).lean()
+    .populate('user', ['username'])
     .then((location) => {
       if (location) {
         return res.json({
@@ -85,7 +77,7 @@ const deleteOne = (req, res) => {
           deleted_location: location
         });
       }
-      return res.status(401).send({ message: 'Unauthorized.' });
+      return res.status(404).json({ message: 'No location found.' });
     })
     .catch((err) => {
       res.json({ error: err.message });

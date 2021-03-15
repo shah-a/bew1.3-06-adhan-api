@@ -42,12 +42,12 @@ const putOne = (req, res) => {
 
   let user;
 
+  // findOneAndUpdate won't work with `mongoose-unique-validator`
   User.findOne({ username: req.params.username })
     .then((query) => {
       user = query;
       user.username = newUsername;
       user.password = newPassword;
-      user.updatedAt = new Date(); // please see bae53f7's commit message (2021/03/14)
       return user.save();
     })
     .then((newUser) => {

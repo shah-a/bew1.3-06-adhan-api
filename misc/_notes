@@ -10,6 +10,12 @@ GET
 /adhan/maghrib     <-- today, maghrib, all locations
 /adhan/isha        <-- today, isha, all locations
 
+{
+    "name": "home"
+    "lat": 43.203995,
+    "long": -79.920850
+}
+
 --------------------
 Stretch:
 - Figure out how to use express validator properly

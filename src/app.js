@@ -17,6 +17,7 @@ app.use('/', routes.home);
 app.use('/', routes.auth);
 app.use('/users', routes.users);
 app.use('/locations', routes.locations);
+app.use('/adhan', routes.adhan);
 
 app.all('/*', (req, res) => {
   res.status(404).json({ error: 'Route not found.' });

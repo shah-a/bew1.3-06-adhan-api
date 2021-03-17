@@ -44,7 +44,7 @@ describe('User Tests', function () {
       .end(function (err, res) {
         if (err) return done(err);
         res.should.have.status(200);
-        res.text.should.include('Successfully added account');
+        res.text.should.include('Successfully added');
         return done();
       });
   });

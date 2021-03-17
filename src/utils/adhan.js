@@ -13,7 +13,7 @@ const adhanTimes = (context) => {
 
   if (['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].includes(prayer)) {
     return {
-      date: date.toLocaleDateString(),
+      date: adhan.date.toLocaleDateString(),
       prayer_time: {
         [prayer]: adhan[prayer].toLocaleTimeString()
       }
@@ -21,7 +21,7 @@ const adhanTimes = (context) => {
   }
 
   const result = {
-    date: date.toLocaleDateString(),
+    date: adhan.date.toLocaleDateString(),
     sunrise: adhan.sunrise.toLocaleTimeString(),
     prayer_times: {
       fajr: adhan.fajr.toLocaleTimeString(),

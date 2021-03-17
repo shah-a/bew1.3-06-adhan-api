@@ -6,6 +6,7 @@ const { adhan } = require('../controllers');
 router.use('/', requireAuth);
 
 // GET routes
-router.get('/:locationId', adhan.getAdhan);
+router.get('/', adhan.getAll);
+router.get('/:locationId', adhan.getOne);
 
 module.exports = router;

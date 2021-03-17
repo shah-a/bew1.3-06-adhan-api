@@ -2,6 +2,7 @@ const { PrayerTimes, Coordinates, CalculationMethod } = require('adhan');
 
 const adhanTimes = (context) => {
   const { prayer } = context;
+  const { location } = context;
   const { lat, long } = context;
   const { year, month, day } = context;
 
@@ -13,6 +14,7 @@ const adhanTimes = (context) => {
 
   if (['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].includes(prayer)) {
     return {
+      location,
       date: adhan.date.toLocaleDateString(),
       prayer_time: {
         [prayer]: adhan[prayer].toLocaleTimeString()
@@ -21,6 +23,7 @@ const adhanTimes = (context) => {
   }
 
   const result = {
+    location,
     date: adhan.date.toLocaleDateString(),
     sunrise: adhan.sunrise.toLocaleTimeString(),
     prayer_times: {

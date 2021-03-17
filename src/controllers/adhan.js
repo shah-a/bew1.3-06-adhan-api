@@ -4,18 +4,18 @@ const { Location } = require('../models');
 const getAll = (req, res) => {
   const { prayer } = req.query;
   const { year, month, day } = req.query;
-  const outputs = [];
+  const outputs = {};
 
   Location.find({ user: req.user._id })
     .then((queries) => {
       if (queries.length > 0) {
-        queries.forEach((query) => {
+        queries.forEach((query, i) => {
           const location = query.name;
           const { lat, long } = query;
           // eslint-disable-next-line object-curly-newline
-          outputs.push(adhan({ prayer, location, lat, long, year, month, day }));
+          outputs[`location_${i + 1}`] = adhan({ prayer, location, lat, long, year, month, day });
         });
-        return res.json({ outputs });
+        return res.json(outputs);
       }
       return res.status(404).json({ message: 'No locations found.' });
     })
@@ -31,9 +31,10 @@ const getOne = (req, res) => {
   Location.findOne({ _id: req.params.locationId, user: req.user._id })
     .then((query) => {
       if (query) {
+        const location = query.name;
         const { lat, long } = query;
         // eslint-disable-next-line object-curly-newline
-        return res.json(adhan({ prayer, lat, long, year, month, day }));
+        return res.json(adhan({ prayer, location, lat, long, year, month, day }));
       }
       return res.status(404).json({ message: 'No location found.' });
     })

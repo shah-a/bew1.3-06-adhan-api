@@ -3,10 +3,9 @@ const { Location } = require('../models');
 
 const getAdhan = (req, res) => {
   const { prayer } = req.query;
-  const { location } = req.query;
   const { year, month, day } = req.query;
 
-  Location.findOne({ _id: location, user: req.user._id })
+  Location.findOne({ _id: req.params.locationId, user: req.user._id })
     .then((query) => {
       if (query) {
         const { lat, long } = query;

@@ -1,31 +1,23 @@
 const { adhan } = require('../utils');
-const { User, Location } = require('../models');
-
-// pseudo-db user and location for testing:
-const user = new User({ username: 'username', password: 'password' });
-const location = new Location({ name: 'home', lat: 43.203995, long: -79.920850 });
-
-user.locations.push(location);
-location.user = user._id;
+const { Location } = require('../models');
 
 const getAdhan = (req, res) => {
-  const { prayerTime } = req.query;
-  // const { locationId } = req.query;
-  const { lat, long } = location;
+  const { prayer } = req.query;
+  const { location } = req.query;
   const { year, month, day } = req.query;
 
-  // eslint-disable-next-line object-curly-newline
-  const result = adhan({ prayerTime, lat, long, year, month, day });
-
-  res.json({ message: 'Adhan' });
+  Location.findOne({ _id: location, user: req.user._id })
+    .then((query) => {
+      if (query) {
+        const { lat, long } = query;
+        // eslint-disable-next-line object-curly-newline
+        return res.json(adhan({ prayer, lat, long, year, month, day }));
+      }
+      return res.status(404).json({ message: 'No location found.' });
+    })
+    .catch((err) => {
+      res.json({ error: err.message });
+    });
 };
-
-// Location.find({ name: blah }).lean()
-//   .then((loc) => {
-//     new Coordinates(loc.lat, loc.long)
-//   })
-//   .catch((err) => {
-//     res.json({ error: err.message });
-//   });
 
 module.exports = { getAdhan };

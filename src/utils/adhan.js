@@ -1,17 +1,7 @@
 const { PrayerTimes, Coordinates, CalculationMethod } = require('adhan');
 
-/*
- * Below, a ternary operator is being used for `const date`
- * to check for a year, month, and day in the context variable.
- * If all three were provided, it uses them to instantiate a `Date`
- * object. Otherwise, the current date is used.
- * The `month` section is being parsed as an integer so that `1` can
- * correctly be subtracted from it to undo the constructor's 0-index
- * for month fields.
- */
-
 const adhanTimes = (context) => {
-  const { prayerTime } = context;
+  const { prayer } = context;
   const { lat, long } = context;
   const { year, month, day } = context;
 
@@ -21,16 +11,28 @@ const adhanTimes = (context) => {
 
   const adhan = new PrayerTimes(coords, date, params);
 
-  const prayerTimes = {
-    fajr: adhan.fajr.toLocaleTimeString(),
+  if (['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'].includes(prayer)) {
+    return {
+      date: date.toLocaleDateString(),
+      prayer_time: {
+        [prayer]: adhan[prayer].toLocaleTimeString()
+      }
+    };
+  }
+
+  const result = {
+    date: date.toLocaleDateString(),
     sunrise: adhan.sunrise.toLocaleTimeString(),
-    dhuhr: adhan.dhuhr.toLocaleTimeString(),
-    asr: adhan.asr.toLocaleTimeString(),
-    maghrib: adhan.maghrib.toLocaleTimeString(),
-    isha: adhan.isha.toLocaleTimeString()
+    prayer_times: {
+      fajr: adhan.fajr.toLocaleTimeString(),
+      dhuhr: adhan.dhuhr.toLocaleTimeString(),
+      asr: adhan.asr.toLocaleTimeString(),
+      maghrib: adhan.maghrib.toLocaleTimeString(),
+      isha: adhan.isha.toLocaleTimeString()
+    }
   };
 
-  return adhan;
+  return result;
 };
 
 module.exports = adhanTimes;

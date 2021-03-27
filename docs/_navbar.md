@@ -1,1 +1,1 @@
-* [GitHub](https://github.com/shah-a/bew1.3-06-adhan-api)
+- [GitHub](https://github.com/shah-a/bew1.3-06-adhan-api)

@@ -1,1 +1,4 @@
-* [Home](/)
+- [Adhan API](/)
+- [Getting Started](01-getting-started.md)
+- [Usage](02-usage.md)
+- [Endpoints](03-endpoints.md)
